@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Manrope", Inter, system-ui, sans-serif;
+  color: #082b3a;
+  background: #f6fafb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply m-0 bg-slate-50 text-slate-900 antialiased transition-colors duration-200 dark:bg-gray-950 dark:text-gray-100;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+input,
+select,
+textarea {
+  @apply transition-colors;
+}
+
+::selection {
+  background: #cff7fb;
+  color: #082b3a;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal 0.65s cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  .reveal-delay {
+    animation-delay: 0.12s;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
