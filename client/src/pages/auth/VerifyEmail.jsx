@@ -1,0 +1,6 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import api from "../../services/api.js";
+import AuthLayout from "../../components/AuthLayout.jsx";
+
+export default function VerifyEmail(){const {token}=useParams();const [status,setStatus]=useState("Verifying your email…");const [ok,setOk]=useState(false);useEffect(()=>{api.get(`/auth/verify-email/${token}`).then(()=>{setOk(true);setStatus("Your email is verified.");}).catch(e=>setStatus(e.response?.data?.message||"This verification link is invalid or expired."));},[token]);return <AuthLayout quote="One verified identity. One secure care journey."><div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-clinical"><div className={`mx-auto grid h-16 w-16 place-items-center rounded-2xl text-2xl ${ok?"bg-emerald-50 text-emerald-700":"bg-primary-50 text-primary-700"}`}>{ok?"✓":"…"}</div><h1 className="mt-6 text-2xl font-extrabold">{status}</h1><p className="mt-3 text-sm text-slate-500">Email verification helps protect clinical information and account recovery.</p><Link to="/login" className="mt-7 inline-flex rounded-xl bg-primary-600 px-6 py-3 text-sm font-bold text-white">Continue to sign in</Link></div></AuthLayout>}
