@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: MediAI Pro API
+  version: 2.0.0
+  description: REST API for the MediAI Pro smart healthcare platform. AI responses are general guidance, not medical diagnoses.
+servers:
+  - url: http://localhost:5000/api
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        message: { type: string }
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      security: []
+      summary: API health check
+      responses:
+        '200': { description: API is available }
+  /auth/register:
+    post:
+      security: []
+      summary: Register a patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+      responses:
+        '201': { description: Patient registered }
+        '400': { description: Validation error }
+  /auth/login:
+    post:
+      security: []
+      summary: Sign in and set refresh-token cookie
+      responses:
+        '200': { description: Signed in }
+        '401': { description: Invalid credentials }
+  /auth/refresh:
+    post:
+      security: []
+      summary: Refresh access token using HTTP-only cookie
+      responses:
+        '200': { description: Access token returned }
+  /auth/me:
+    get: { summary: Get current profile, responses: { '200': { description: Current user } } }
+    patch: { summary: Update current profile, responses: { '200': { description: Updated user } } }
+  /doctors:
+    get:
+      security: []
+      summary: List verified doctors
+      responses: { '200': { description: Doctor list } }
+  /appointments:
+    post: { summary: Patient books an appointment, responses: { '201': { description: Appointment created } } }
+  /appointments/mine:
+    get: { summary: Patient appointment history, responses: { '200': { description: Appointment list } } }
+  /records:
+    get: { summary: Get permitted medical records, responses: { '200': { description: Medical records } } }
+  /ai/chat:
+    post: { summary: Send a message to the health assistant, responses: { '200': { description: Assistant response } } }
+  /ai/symptom-checker:
+    post: { summary: Assess symptoms and urgency, responses: { '200': { description: Structured general guidance } } }
+  /health-logs:
+    get: { summary: Get health tracking entries, responses: { '200': { description: Health log list } } }
+    post: { summary: Record a health measurement or diary entry, responses: { '201': { description: Entry created } } }
+  /prescriptions:
+    get: { summary: Get role-permitted prescriptions, responses: { '200': { description: Prescription list } } }
+    post: { summary: Doctor issues a digital prescription, responses: { '201': { description: Prescription issued } } }
+  /notifications:
+    get: { summary: Get current user's notifications, responses: { '200': { description: Notification list } } }
+  /operations/analytics:
+    get: { summary: Admin platform analytics, responses: { '200': { description: Analytics snapshot } } }
+  /operations/hospitals:
+    get: { summary: List hospitals, responses: { '200': { description: Hospital list } } }
+    post: { summary: Admin creates hospital, responses: { '201': { description: Hospital created } } }
+  /operations/payments:
+    get: { summary: Staff payment records, responses: { '200': { description: Payment list } } }
+    post: { summary: Staff records payment, responses: { '201': { description: Payment recorded } } }
+  /operations/audit:
+    get: { summary: Admin audit-log view, responses: { '200': { description: Audit records } } }
